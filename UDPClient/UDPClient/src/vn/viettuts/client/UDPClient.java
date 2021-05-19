@@ -12,6 +12,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import vn.viettuts.common.FileInfo;
 
@@ -28,8 +29,8 @@ public class UDPClient {
      * @param args
      */
     public static void main(String[] args) {
-        String sourcePath = "D:\\client\\test.zip";
-        String destinationDir = "D:\\server\\";
+        String sourcePath = "";
+        String destinationDir = "C:\\Users\\DELL\\Desktop\\socket\\network_socket-1\\UDPServer\\server\\";
         UDPClient udpClient = new UDPClient();
         udpClient.connectServer();
         udpClient.sendFile(sourcePath, destinationDir);
@@ -58,8 +59,41 @@ public class UDPClient {
     private void sendFile(String sourcePath, String destinationDir) {
         InetAddress inetAddress;
         DatagramPacket sendPacket;
+        Scanner sc = new Scanner(System.in);
+        boolean check = false;
+        String temp = "";
 
         try {
+            File fileshow = new File("C:\\Users\\DELL\\Desktop\\socket\\network_socket-1\\UDPClient\\UDPClient\\client\\");
+            String[] paths;
+            paths = fileshow.list();
+            for(String path:paths) {
+         
+                // prints filename and directory name
+                System.out.println(path);
+            }
+            while(!(check)){
+                System.out.println("Nhập file muốn truyền đi:");
+                temp = sc.nextLine();
+                for(String path:paths) {
+                    if(temp.equals(path) ){
+                        check = true;
+                    }
+                }
+
+                if (!(check)) {
+                    System.out.println("File " + temp + " akhông có trong thư mục!!");
+                    for(String path:paths) {
+         
+                        // prints filename and directory name
+                        System.out.println(path);
+                    }
+                }
+            }
+
+            sourcePath = "C:\\Users\\DELL\\Desktop\\socket\\network_socket-1\\UDPClient\\UDPClient\\client\\" + temp;
+
+            
             File fileSend = new File(sourcePath);
             InputStream inputStream = new FileInputStream(fileSend);
             BufferedInputStream bis = new BufferedInputStream(inputStream);
